@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<style>
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 15px;
+}
+h2 {
+  text-align: center;
+}
+</style>
+
+<input id="update" type="button" value="Update">
+<h2>Games</h2>
+<div id="demo"></div>
+
+<script>
+window.onload = () => {
+	document.querySelector('#update').onclick = () => {
+		ajaxGet();
+	}
+}
+
+function ajaxGet() {
+  let xmlhttp, data, x, txt = "";
+	xmlhttp = new XMLHttpRequest();
+	xmlhttp.onreadystatechange = function() {
+
+  	if (this.readyState == 4 && this.status == 200) {
+      data = JSON.parse(this.responseText);
+      console.log(data);
+      txt += `<table>
+        <thead>
+          <tr>${data.headers.map(h => `<th>${h}</th>`).join``}</tr>
+        </thead>
+        <tbody>
+          ${data.data.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join``}</tr>`).join``}
+        </tbody>
+      </table>`;
+    document.getElementById("demo").innerHTML = txt;
+    }
+};
+
+xmlhttp.open("GET", "http://localhost:3000/");
+xmlhttp.send();
+}
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
